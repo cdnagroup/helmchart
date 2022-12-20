@@ -3,7 +3,7 @@ entries:
   fastapi:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-12-20T20:55:19.8231177+07:00"
+    created: "2022-12-20T21:04:27.8223331+07:00"
     description: A Helm chart for Kubernetes
     digest: cec904e5a9aa703c734c881a3ac59f64504297f7d497d7b12cce68d55c95f13f
     name: fastapi
@@ -13,7 +13,7 @@ entries:
     version: 0.1.6
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-12-20T20:55:19.8220701+07:00"
+    created: "2022-12-20T21:04:27.8218191+07:00"
     description: A Helm chart for Kubernetes
     digest: 144edfd46afcc2c9afb0506a078b7e0f7227556c6429dd38d31f2aa721beb8d9
     name: fastapi
@@ -23,7 +23,7 @@ entries:
     version: 0.1.5
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-12-20T20:55:19.8215601+07:00"
+    created: "2022-12-20T21:04:27.8213085+07:00"
     description: A Helm chart for Kubernetes
     digest: 1573b59b43a5f479123cbad5c1a9ff1047d07ca1347dc05b075574d240121ff6
     name: fastapi
@@ -31,4 +31,4 @@ entries:
     urls:
     - https://cdnagroup.github.io/helmchart/fastapi-0.1.4.tgz
     version: 0.1.4
-generated: "2022-12-20T20:55:19.8205398+07:00"
+generated: "2022-12-20T21:04:27.8207903+07:00"

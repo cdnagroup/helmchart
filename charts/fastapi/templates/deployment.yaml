@@ -62,34 +62,10 @@ spec:
           - mountPath: /app/
             name: {{ template "fastapi.fullname" . }}-init
         {{- end }}
-              # subPath: /mysql
-              # readOnly: false
-          # {{- if and .Values.livenessProbe.enabled }}
-          # livenessProbe:
-          #   exec:
-          #     command:
-          #     - ls
-          #   initialDelaySeconds: 15
-          #   timeoutSeconds: 1
-          # {{- else }}
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # {{- end }}
-          # {{- if and .Values.readinessProbe.enabled }}
-          # readinessProbe:
-          #   exec:
-          #     command:
-          #     - ls
-          #   initialDelaySeconds: 15
-          #   timeoutSeconds: 1
-          # {{- else }}
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # {{- end }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

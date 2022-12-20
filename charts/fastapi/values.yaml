@@ -43,53 +43,37 @@ service:
   type: ClusterIP
   port: 80
 
-# ingress:
-#   enabled: false
-#   className: ""
-#   annotations:
-#     {}
-#     # kubernetes.io/ingress.class: nginx
-#     # kubernetes.io/tls-acme: "true"
-#   hosts:
-#     - host: chart-example.local
-#       paths:
-#         - path: /
-#           pathType: ImplementationSpecific
-#   tls: []
 ingress:
-  enabled: true
+  enabled: false
+  className: ""
   annotations:
     {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: test.tnpp.app
+    - host: chart-example.local
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: 
-    - host: 
-      - test.tnpp.app
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  tls: []
 
 livenessProbe:
-  enabled: true
-  exec:
-    command:
-    - cat
-    - /tmp/health
-  initialDelaySeconds: 15
-  timeoutSeconds: 1
+  tcpSocket:
+    port: 8000
+  initialDelaySeconds: 30
+  timeoutSeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 6
 
 readinessProbe:
-  enabled: true
-  httpGet:
-    path: /health
+  tcpSocket:
     port: 8000
-  initialDelaySeconds: 15
-  timeoutSeconds: 1
+  initialDelaySeconds: 5
+  timeoutSeconds: 3
+  periodSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
 
 resources:
   {}
@@ -129,12 +113,13 @@ persistence:
 precmd:
   - pip install -r /app/requirements.txt
   - cd /app
+  - ls -lvn
 python:
   cmd: uvicorn
   args: 
     - main:app 
     - --reload 
-    - --port 80
+    - --port 8000
     - --host 0.0.0.0
 initFastapi:
   enabled: true
