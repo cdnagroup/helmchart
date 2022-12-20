@@ -50,10 +50,10 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["bin/sh", "-c", "cd /app && ls -lvn && pip install -r requirements.txt && uvicorn main:app --reload"]
+          command: ["bin/sh", "-c", "cd /app && pip install -r requirements.txt && uvicorn main:app --reload --port {{ .Values.service.port }} --host 0.0.0.0"]
           ports:
             - name: http
-              containerPort: 8000
+              containerPort:  {{ .Values.service.port }}
               protocol: TCP
           volumeMounts:
           - mountPath: /app
