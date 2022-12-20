@@ -50,7 +50,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["bin/sh", "-c", "pip install -r /app/requirements.txt && {{ .Values.python.cmd }} {{ join " " .Values.python.args }}"]
+          command: ["bin/sh", "-c", "{{  join " && " .Values.precmd }} && {{ .Values.python.cmd }} {{ join " " .Values.python.args }}"]
           ports:
             - name: http
               containerPort:  {{ .Values.service.port }}
