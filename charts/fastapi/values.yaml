@@ -126,6 +126,15 @@ persistence:
   # storageClass:
   accessMode: ReadWriteOnce
   size: 8Gi
+# precmd:
+#   - apt install -y vim
+python:
+  cmd: uvicorn
+  args: 
+    - app.main:app 
+    - --reload 
+    - --port 80
+    - --host 0.0.0.0
 initFastapi:
   enabled: true
   initMain: true
