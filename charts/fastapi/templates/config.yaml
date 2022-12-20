@@ -1,0 +1,19 @@
+{{- if .Values.initFastapi.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name:  {{ template "fastapi.fullname" . }}-init
+data:
+{{- if .Values.initFastapi.initRequirements }}
+  requirements.txt: |-
+{{ .Values.initFastapi.requirements| indent 4 }}
+{{- end}}
+{{- if .Values.initFastapi.initMain }}
+  main.py: |-
+    from fastapi import FastAPI
+    app = FastAPI()
+    @app.get("/")
+    async def root():
+        return {"message": "Hello World"}
+{{- end}}
+{{- end}}

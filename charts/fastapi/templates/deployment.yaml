@@ -20,6 +20,19 @@ spec:
       labels:
         {{- include "fastapi.selectorLabels" . | nindent 8 }}
     spec:
+      volumes:
+      - name: {{ template "fastapi.fullname" . }}-app
+      {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ template "fastapi.fullname" . }}-app
+      {{- else }}
+        emptyDir: {}
+      {{- end }}
+      {{- if .Values.initFastapi.enabled }}
+      - name: {{ template "fastapi.fullname" . }}-init
+        configMap:
+          name: {{ template "fastapi.fullname" . }}-init
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -27,24 +40,56 @@ spec:
       serviceAccountName: {{ include "fastapi.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      # initContainers:
+      # - name: init-python
+      #   image: busybox:1.28
+      #   command: ['sh', '-c', "python3"]
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["bin/sh", "-c", "cd /app && ls -lvn && pip install -r requirements.txt && uvicorn main:app --reload"]
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8000
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+          volumeMounts:
+          - mountPath: /app
+            name: {{ template "fastapi.fullname" . }}-app
+        {{- if .Values.initFastapi.enabled }}
+          - mountPath: /app/
+            name: {{ template "fastapi.fullname" . }}-init
+        {{- end }}
+              # subPath: /mysql
+              # readOnly: false
+          # {{- if and .Values.livenessProbe.enabled }}
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #     - ls
+          #   initialDelaySeconds: 15
+          #   timeoutSeconds: 1
+          # {{- else }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # {{- end }}
+          # {{- if and .Values.readinessProbe.enabled }}
+          # readinessProbe:
+          #   exec:
+          #     command:
+          #     - ls
+          #   initialDelaySeconds: 15
+          #   timeoutSeconds: 1
+          # {{- else }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
