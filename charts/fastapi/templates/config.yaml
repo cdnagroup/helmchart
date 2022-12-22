@@ -1,19 +1,31 @@
-{{- if .Values.initFastapi.enabled }}
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name:  {{ template "fastapi.fullname" . }}-init
 data:
+{{- if .Values.initFastapi.enabled }}
 {{- if .Values.initFastapi.initRequirements }}
   requirements.txt: |-
 {{ .Values.initFastapi.requirements| indent 4 }}
 {{- end}}
 {{- if .Values.initFastapi.initMain }}
   main.py: |-
+    print("Starting Application")
     from fastapi import FastAPI
     app = FastAPI()
     @app.get("/")
     async def root():
         return {"message": "Hello World"}
+    print("Application Started")
 {{- end}}
 {{- end}}
+  appStart.sh: |-
+    pip install -r requirements.txt;
+    ls;
+    if [ -f "installedPip" ]; then
+        echo "requirements has installed"
+    else 
+        echo "requirements has installed"
+    fi;
+    uvicorn main:app --reload --port {{ .Values.service.port }} --host 0.0.0.0;

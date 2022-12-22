@@ -41,7 +41,7 @@ securityContext:
 sleepyTime: 10000
 service:
   type: ClusterIP
-  port: 80
+  port: 8000
 
 ingress:
   enabled: false
@@ -111,16 +111,10 @@ persistence:
   accessMode: ReadWriteOnce
   size: 8Gi
 precmd:
-  - pip install -r /app/requirements.txt
-  - cd /app
-  - ls -lvn
+  - pip install -r /requirements.txt
 python:
-  cmd: uvicorn
-  args: 
-    - main:app 
-    - --reload 
-    - --port 8000
-    - --host 0.0.0.0
+  path: /app
+  
 initFastapi:
   enabled: true
   initMain: true
