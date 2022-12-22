@@ -28,11 +28,9 @@ spec:
       {{- else }}
         emptyDir: {}
       {{- end }}
-      {{- if .Values.initFastapi.enabled }}
       - name: {{ template "fastapi.fullname" . }}-init
         configMap:
           name: {{ template "fastapi.fullname" . }}-init
-      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
