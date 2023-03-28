@@ -6,13 +6,15 @@ pipelines:
         clone:
           enabled: false
         script:
-          - git clone --bare git@bitbucket.org:cdnagroup/cdnachart.git
-          - cd cdnachart.git
-          - echo -e " \ncharts" > info/exclude
-          - echo -e " \nbitbucket-pipelines.yml" > info/exclude
-          - echo -e " \ngithub.gitignore" > info/exclude
+          - git clone git@bitbucket.org:cdnagroup/cdnachart.git
+          - cd cdnachart
+          - rm -rf charts
+          - rm bitbucket-pipelines.yml
+          - rm github.gitignore
           - git remote add upstream git@github.com:cdnagroup/helmchart.git
           - git push upstream master
           - git push --tags upstream
           - git remote set-url origin git@github.com:cdnagroup/helmchart.git
-          - git push --mirror
+          - git add .
+          - git commit -m "ignore"
+          - git push --force
