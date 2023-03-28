@@ -16,5 +16,7 @@ pipelines:
           - git push --tags upstream --force
           - git remote set-url origin git@github.com:cdnagroup/helmchart.git
           - git add .
+          - git config --global user.email "cdnagroup@gmail.com"
+          - git config --global user.name "CDNA IT Solution"
           - git commit -m "ignore"
           - git push --force
