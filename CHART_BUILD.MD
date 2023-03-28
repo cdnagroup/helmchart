@@ -154,8 +154,8 @@ Considering the advantages, I recommend using GitHub to create Helm Repository. 
 *helm package charts/fastapi*
 
 Helm package charts\fastapi
-helm repo index --url https://cdnagroup.github.io/helmchart  --merge index.yaml .
 
 ### update index 
-*Helm repo index . --url https://cdnagroup.github.io/helmchart*
+*helm repo index --url https://cdnagroup.github.io/helmchart .
+### update index with merge
 *helm repo index --url https://cdnagroup.github.io/helmchart --merge index.yaml .

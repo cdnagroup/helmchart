@@ -8,4 +8,10 @@ pipelines:
         script:
           - git clone --bare git@bitbucket.org:cdnagroup/cdnachart.git
           - cd cdnachart.git
+          - RUN echo -e "\
+          - dockers \n\
+          - charts \n\
+          - bitbucket-pipelines.yml \n\
+          - CHART_BUILD \n\
+          - " > github.gitignore
           - git push --mirror git@github.com:cdnagroup/helmchart.git
