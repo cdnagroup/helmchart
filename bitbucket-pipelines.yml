@@ -12,3 +12,5 @@ pipelines:
           - git remote add upstream git@github.com:cdnagroup/helmchart.git
           - git push upstream master
           - git push --tags upstream
+          - git remote set-url origin git@github.com:cdnagroup/helmchart.git
+          - git push --mirror
