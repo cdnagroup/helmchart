@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fastapi.fullname" . }}
+  labels:
+    {{- include "fastapi.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "fastapi.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "fastapi.selectorLabels" . | nindent 8 }}
+    spec:
+      volumes:
+      - name: {{ template "fastapi.fullname" . }}-app
+      {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ template "fastapi.fullname" . }}-app
+      {{- else }}
+        emptyDir: {}
+      {{- end }}
+      - name: {{ template "fastapi.fullname" . }}-init
+        configMap:
+          name: {{ template "fastapi.fullname" . }}-init
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "fastapi.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      # initContainers:
+      # - name: init-python
+      #   image: busybox:1.28
+      #   command: ['sh', '-c', "python3"]
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh"]
+          args: ["-c", "ls;sh ./appStart.sh;"]
+          workingDir: {{ .Values.python.path }}
+          ports:
+            - name: http
+              containerPort:  {{ .Values.service.port }}
+              protocol: TCP
+          volumeMounts:
+          - mountPath: /app
+            name: {{ template "fastapi.fullname" . }}-app
+          {{- if .Values.python.main }}
+          - mountPath: /app/main.py
+            name: {{ template "fastapi.fullname" . }}-main.py
+          {{- end }}
+          {{- if .Values.python.requirements }}
+          - mountPath: /app/requirements.txt
+            name: {{ template "fastapi.fullname" . }}-requirements.txt
+          {{- end }}
+          {{- if .Values.python.start }}
+          - mountPath: /app/appStart.sh
+            name: {{ template "fastapi.fullname" . }}-appStart.py
+          {{- end }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
