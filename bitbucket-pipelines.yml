@@ -10,7 +10,7 @@ pipelines:
           - cd cdnachart
           - rm -rf charts
           - rm bitbucket-pipelines.yml
-          - rm github.gitignore
+          - rm CHART_BUILD.MD
           - git remote add upstream git@github.com:cdnagroup/helmchart.git
           - git push upstream master
           - git push --tags upstream
