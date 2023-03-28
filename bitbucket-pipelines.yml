@@ -9,4 +9,6 @@ pipelines:
           - git clone --bare git@bitbucket.org:cdnagroup/cdnachart.git
           - cd cdnachart.git
           - echo -e "dockers \ncharts \nbitbucket-pipelines.yml \nCHART_BUILD \n" > github.gitignore
-          - git push --mirror git@github.com:cdnagroup/helmchart.git
+          - git remote add upstream git@github.com:cdnagroup/helmchart.git
+          - git push upstream master
+          - git push --tags upstream
