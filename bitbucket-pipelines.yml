@@ -8,7 +8,9 @@ pipelines:
         script:
           - git clone --bare git@bitbucket.org:cdnagroup/cdnachart.git
           - cd cdnachart.git
-          - echo -e "dockers \ncharts \nbitbucket-pipelines.yml \nCHART_BUILD \n" > github.gitignore
+          - echo -e " \ncharts" > info/exclude
+          - echo -e " \nbitbucket-pipelines.yml" > info/exclude
+          - echo -e " \ngithub.gitignore" > info/exclude
           - git remote add upstream git@github.com:cdnagroup/helmchart.git
           - git push upstream master
           - git push --tags upstream
