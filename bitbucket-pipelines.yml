@@ -12,8 +12,8 @@ pipelines:
           - rm bitbucket-pipelines.yml
           - rm CHART_BUILD.MD
           - git remote add upstream git@github.com:cdnagroup/helmchart.git
-          - git push upstream master
-          - git push --tags upstream
+          - git push upstream master --force
+          - git push --tags upstream --force
           - git remote set-url origin git@github.com:cdnagroup/helmchart.git
           - git add .
           - git commit -m "ignore"
