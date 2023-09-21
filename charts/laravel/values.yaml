@@ -15,7 +15,18 @@ php:
   nameOverride: ""
   fullnameOverride: ""
 
-  ext: "pdo libssl-dev bcmath ctype fileinfo json mbstring xml tokenizer"
+  ext:
+    - "pdo"
+    # no library ssl
+    # - "libssl-dev"
+    - "bcmath"
+    - "ctype"
+    - "fileinfo"
+    - "json"
+    - "mbstring"
+    # Want install libxml-2.0
+    - "xml"
+    - "tokenizer"
   beforerun:
   run: "php artisan serve"
 
