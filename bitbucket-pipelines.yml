@@ -6,7 +6,7 @@ pipelines:
         clone:
           enabled: false
         script:
-          - git clone git@bitbucket.org:cdnagroup/cdnachart.git
+          - git clone git@bitbucket.org:dnacode/cdnachart.git
           - cd cdnachart
           - rm -rf charts
           - rm bitbucket-pipelines.yml
