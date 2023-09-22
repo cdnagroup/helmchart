@@ -3,7 +3,7 @@ entries:
   fastapi:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-03-28T21:49:04.406918+07:00"
+    created: "2023-09-21T09:56:11.5004905+07:00"
     description: A Helm chart for Kubernetes
     digest: eb8c4c62e7baa6824ffbd5dc341f95f239317d56f5d61aabb08f33b2ee758b4b
     name: fastapi
@@ -11,4 +11,15 @@ entries:
     urls:
     - https://cdnagroup.github.io/helmchart/fastapi-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-28T21:49:04.4006728+07:00"
+  tn-itd:
+  - apiVersion: v2
+    appVersion: 7.4.0
+    created: "2023-09-21T09:56:11.5010251+07:00"
+    description: A Helm chart for Kubernetes
+    digest: f2950aabf0863070777f5911e3e5f96242d8b18450fe27e1d6a1ff73771fd42b
+    name: tn-itd
+    type: application
+    urls:
+    - https://cdnagroup.github.io/helmchart/tn-itd-0.0.1.tgz
+    version: 0.0.1
+generated: "2023-09-21T09:56:11.499407+07:00"
