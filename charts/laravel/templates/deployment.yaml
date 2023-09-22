@@ -31,49 +31,20 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.php.image.repository }}:{{ .Values.php.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.php.image.pullPolicy }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: 80
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          
           livenessProbe:
-            exec:
-              command:
-              - "ls"
-            failureThreshold: 10
-            initialDelaySeconds: 180
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 10
-          # lifecycle:
-          #   postStart:
-          #     exec:
-          #       command: 
-          #         - "/bin/sh"
-          #         - "-c"
-          #       {{- if not .Values.php.ext }}
-          #         - "docker-php-ext-install"
-          #         - {{ .Values.php.ext }}
-          #       {{- end }}
-
-          #       {{- if not .Values.php.beforerun }}
-          #         - {{ .Values.php.beforerun }}
-          #       {{- end }}
-
-          #       {{- if not .Values.php.run }}
-          #         - {{ .Values.php.run }}
-          #       {{- end }}
-
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

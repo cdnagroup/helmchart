@@ -3,23 +3,34 @@ entries:
   fastapi:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-09-21T09:56:11.5004905+07:00"
+    created: "2023-09-22T13:06:50.5730168+07:00"
     description: A Helm chart for Kubernetes
-    digest: eb8c4c62e7baa6824ffbd5dc341f95f239317d56f5d61aabb08f33b2ee758b4b
+    digest: 7c59a1801d25d6f18d451cec2c35dbb0fd272f00e4ca8c244ff0ecd37707a5be
     name: fastapi
     type: application
     urls:
     - https://cdnagroup.github.io/helmchart/fastapi-1.0.0.tgz
     version: 1.0.0
+  laravel:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-09-22T13:06:50.8484751+07:00"
+    description: A Helm chart for Kubernetes
+    digest: c5a3b8db9db6e85457fabf6d2bee341b0e6c33e297bfeaeecd8a3fe5055a975e
+    name: laravel
+    type: application
+    urls:
+    - https://cdnagroup.github.io/helmchart/laravel-0.1.0.tgz
+    version: 0.1.0
   tn-itd:
   - apiVersion: v2
     appVersion: 7.4.0
-    created: "2023-09-21T09:56:11.5010251+07:00"
+    created: "2023-09-22T13:06:50.8494761+07:00"
     description: A Helm chart for Kubernetes
-    digest: f2950aabf0863070777f5911e3e5f96242d8b18450fe27e1d6a1ff73771fd42b
+    digest: 89f1b1d86f6da5bd54f170ea935760c38ad08124fbbc89f09e3536c63ccc015f
     name: tn-itd
     type: application
     urls:
     - https://cdnagroup.github.io/helmchart/tn-itd-0.0.1.tgz
     version: 0.0.1
-generated: "2023-09-21T09:56:11.499407+07:00"
+generated: "2023-09-22T13:06:50.5720182+07:00"
