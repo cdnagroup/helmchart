@@ -8,7 +8,7 @@ image:
   repository: cdnagroup/laravel
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: tnitd-1.0.0""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -80,9 +80,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-persistence:
-  enabled: false
-  storageSize: 10Gi
-  accessModes:
-    - ReadWriteOnce
