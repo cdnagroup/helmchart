@@ -1,0 +1,38 @@
+image:
+  repository: neilpang/acme.sh
+  pullPolicy: Always
+  tag: "latest"
+
+acmesh:
+  env:
+    provider: "cloudflare"  # or "google", "godaddy", etc.
+    cf:
+      CF_Token: "ETahYutO1sLwYOfb_bZOF6P0_vhQMmwkQ19uR1lp"
+      CF_Account_ID: "3eebaa694ee43f9a217c2d285dabba18"
+
+  options:
+    - --keylength ec-256
+    - --server letsencrypt
+    - --dns dns_cf
+    - --challenge-alias cdnaitsolution.com
+    - --test 
+    - --preferred-chain "\(STAGING\) Bogus Broccoli X2"
+
+  domain: tnpp.app
+  
+  volumes:
+    certsVolume:
+      persistentVolumeClaim: "certs-pvc"
+      path: "/certs"
+      storageClass: nas
+      accessMode: ReadWriteOnce
+      size: 1Gi
+
+    logsVolume:
+      persistentVolumeClaim: "logs-pvc"
+      path: "/var/log/acme"
+      storageClass: nas
+      accessMode: ReadWriteOnce
+      size: 500Mi
+  
+  cronjobSchedule: "0 0 * * 1" # รันทุกวันจันทร์เวลาเที่ยงคืน

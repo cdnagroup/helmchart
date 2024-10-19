@@ -1,0 +1,77 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: acme-issue-job
+  namespace: {{ .Release.Namespace }}
+spec:
+  template:
+    spec:
+      dnsPolicy: "None"  # Disable default DNS settings
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+        searches:
+          - default.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+        options:
+          - name: ndots
+            value: "5"
+      containers:
+      - name: acme-container
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        {{- if eq .Values.acmesh.env.provider "cloudflare" }}
+        - name: CF_Token
+          valueFrom:
+            secretKeyRef:
+              name: cloudflare-api-token
+              key: CF_Token
+        - name: CF_Account_ID
+          value: "{{ .Values.acmesh.env.cf.CF_Account_ID }}"
+        {{- else if .Values.acmesh.env.or }}
+        - name: CF_Email
+          value: "{{ .Values.acmesh.env.or.CF_Email }}"
+        - name: CF_Global_Key
+          value: "{{ .Values.acmesh.env.or.CF_Global_Key }}"
+        {{- end }}
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+            CCDATE=$(date "+%Y%m%d");
+            CCTIME=$(date "+%H%M%S");
+            OUTPUT_DIR="/certs/{{ .Values.acmesh.domains }}/${CCDATE}";
+            MKDIR -R $OUTPUT;
+            echo "starting add issue";
+            CMD="ACMERUN=\$(acme.sh --issue -f";
+
+            # Append domains to CMD
+            echo add domain : {{ .Values.acmesh.domains }};
+            CMD="$CMD -d {{ .Values.acmesh.domains }}";
+            CMD="$CMD -d *.{{ .Values.acmesh.domains }}";
+                
+            # Append options to CMD
+            {{- range .Values.acmesh.options }}
+            echo add option : {{ . }}
+            CMD="$CMD {{ . }}"
+            {{- end }}
+                
+            CMD="$CMD --home $OUTPUT_DIR --cert-home $OUTPUT_DIR )"
+            echo "Command : $CMD";
+            # Execute the constructed command
+            eval $CMD;
+            echo "$ACMERUN" > $OUTPUT_DIR/res_issue_$CCTIME.txt
+        volumeMounts:
+        - name: certs-volume
+          mountPath: {{ .Values.acmesh.volumes.certsVolume.path }}
+      restartPolicy: Never
+
+      volumes:
+      - name: certs-volume
+        persistentVolumeClaim:
+          claimName: {{ .Values.acmesh.volumes.certsVolume.persistentVolumeClaim }}
+      - name: logs-volume
+        persistentVolumeClaim:
+          claimName: {{ .Values.acmesh.volumes.logsVolume.persistentVolumeClaim }}
+  backoffLimit: 1
