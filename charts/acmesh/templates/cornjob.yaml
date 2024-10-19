@@ -43,15 +43,15 @@ spec:
             - |
                 CCDATE=$(date "+%Y%m%d");
                 CCTIME=$(date "+%H%M%S");
-                OUTPUT_DIR="/certs/{{ .Values.acmesh.domains }}/${CCDATE}";
+                OUTPUT_DIR="/certs/{{ .Values.acmesh.domain }}/${CCDATE}";
                 MKDIR -R $OUTPUT;
                 echo "starting add renew";
                 CMD="ACMERUN=\$(acme.sh --renew -f";
 
-                # Append domains to CMD
-                echo add domain : {{ .Values.acmesh.domains }};
-                CMD="$CMD -d {{ .Values.acmesh.domains }}";
-                CMD="$CMD -d *.{{ .Values.acmesh.domains }}";
+                # Append domain to CMD
+                echo add domain : {{ .Values.acmesh.domain }};
+                CMD="$CMD -d {{ .Values.acmesh.domain }}";
+                CMD="$CMD -d *.{{ .Values.acmesh.domain }}";
                     
                 # Append options to CMD
                 {{- range .Values.acmesh.options }}
