@@ -71,7 +71,4 @@ spec:
       - name: certs-volume
         persistentVolumeClaim:
           claimName: {{ .Values.acmesh.volumes.certsVolume.persistentVolumeClaim }}
-      - name: logs-volume
-        persistentVolumeClaim:
-          claimName: {{ .Values.acmesh.volumes.logsVolume.persistentVolumeClaim }}
   backoffLimit: 1
