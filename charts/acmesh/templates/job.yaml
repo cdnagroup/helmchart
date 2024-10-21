@@ -18,10 +18,12 @@ spec:
           - name: ndots
             value: "5"
       containers:
-      - name: acme-container
+      - name: acme-issue
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
+        - name: TZ
+          value: "Asia/Bangkok"
         {{- if eq .Values.acmesh.env.provider "cloudflare" }}
         - name: CF_Token
           valueFrom:
@@ -39,10 +41,12 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
         - |
+            acme.sh --register-account -m cdnagroup@gmail.com;
             CCDATE=$(date "+%Y%m%d");
             CCTIME=$(date "+%H%M%S");
-            OUTPUT_DIR="/certs/{{ .Values.acmesh.domain }}/${CCDATE}";
-            MKDIR -R $OUTPUT;
+            OUTPUT_DIR="/certs/{{ .Values.acmesh.domain }}/current";
+            cp -R "/certs/{{ .Values.acmesh.domain }}/current" "/certs/{{ .Values.acmesh.domain }}/${CCDATE}";
+            mkdir -p $OUTPUT_DIR;
             echo "starting add issue";
             CMD="ACMERUN=\$(acme.sh --issue -f";
 

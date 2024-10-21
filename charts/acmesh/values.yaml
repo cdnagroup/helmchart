@@ -7,16 +7,15 @@ acmesh:
   env:
     provider: "cloudflare"  # or "google", "godaddy", etc.
     cf:
-      CF_Token: "ETahYutO1sLwYOfb_bZOF6P0_vhQMmwkQ19uR1lp"
-      CF_Account_ID: "3eebaa694ee43f9a217c2d285dabba18"
+      CF_Token: "Gh9CKLkslLWM_za3gvbunNWFsCCsjxTRwO8ZMlue"
+      CF_Account_ID: "db954199eb8428d1057dcd3a8f14f41c"
 
   options:
     - --keylength ec-256
-    - --server letsencrypt
+    - --server zerossl
     - --dns dns_cf
     - --challenge-alias cdnaitsolution.com
-    - --test 
-    - --preferred-chain "\(STAGING\) Bogus Broccoli X2"
+    - --preferred-chain \"\(STAGING\) Bogus Broccoli X2\"
 
   domain: tnpp.app
   
